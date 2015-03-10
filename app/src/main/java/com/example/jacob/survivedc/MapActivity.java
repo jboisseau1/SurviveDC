@@ -1,7 +1,10 @@
 package com.example.jacob.survivedc;
 
+import android.app.ActionBar;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.support.v4.widget.DrawerLayout;
+
 
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -13,12 +16,22 @@ import com.google.android.gms.maps.model.MarkerOptions;
 public class MapActivity extends FragmentActivity {
 
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
-
+    //private NavigationDrawerFragment mNavigationDrawerFragment;
+    //private CharSequence mTitle;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
         setUpMapIfNeeded();
+//        mNavigationDrawerFragment = (NavigationDrawerFragment)
+//                getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
+//        mTitle = getTitle();
+//
+//        // Set up the drawer.
+//        mNavigationDrawerFragment.setUp(
+//                R.id.navigation_drawer,
+//                (DrawerLayout) findViewById(R.id.drawer_layout));
+
     }
 
     @Override
@@ -55,21 +68,23 @@ public class MapActivity extends FragmentActivity {
         }
     }
 
-    /**
-     * This is where we can add markers or lines, add listeners or move the camera. In this case, we
-     * just add a marker near Africa.
-     * <p/>
-     * This should only be called once and when we are sure that {@link #mMap} is not null.
-     */
-    private void setUpMap() {
+
+
+
+    public void setUpMap() {
+            //adds maker named DC and the lat and lng of the location
         mMap.addMarker(new MarkerOptions().position(new LatLng(38.9065231,-77.0375448)).title("Washington DC"));
 
-        CameraUpdate center=
-                CameraUpdateFactory.newLatLng(new LatLng(38.9065231,-77.0375448));
+            //sets the lat and lng
+        CameraUpdate center = CameraUpdateFactory.newLatLng(new LatLng(38.9065231,-77.0375448));
         CameraUpdate zoom= CameraUpdateFactory.zoomTo(13);
-
+            //set the scope of the map to DC
         mMap.moveCamera(center);
         mMap.animateCamera(zoom);
+
+            //lets the user see where they are with the blue dot
         mMap.setMyLocationEnabled(true);
+
+
     }
 }

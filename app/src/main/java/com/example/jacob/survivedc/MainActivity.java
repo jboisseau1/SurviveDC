@@ -2,6 +2,7 @@ package com.example.jacob.survivedc;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
@@ -19,6 +20,16 @@ import android.support.v4.widget.DrawerLayout;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
+
+import java.util.Map;
+
 
 public class MainActivity extends ActionBarActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
@@ -27,6 +38,9 @@ public class MainActivity extends ActionBarActivity
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
      */
     private NavigationDrawerFragment mNavigationDrawerFragment;
+    private GoogleMap mMap;
+    private SupportMapFragment mMapFragment;
+    private Fragment mVisible;
 
     /**
      * Used to store the last screen title. For use in {@link #restoreActionBar()}.
@@ -46,6 +60,10 @@ public class MainActivity extends ActionBarActivity
         mNavigationDrawerFragment.setUp(
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
+
+        setUpFragments();
+        mVisible = mMapFragment;
+        mTitle ="map";
     }
 
     @Override
@@ -55,8 +73,26 @@ public class MainActivity extends ActionBarActivity
         fragmentManager.beginTransaction()
                 .replace(R.id.container, PlaceholderFragment.newInstance(position + 1))
                 .commit();
+
+        switch (position)
+        {
+            //home
+            case 2:
+                showFragment(mMapFragment);
+                mTitle="mappp";
+                break;
+
+
+
+        }
+
+
+        //showFragment(mMapFragment);
     }
 
+
+
+        //runs when pressed in drawer
     public void onSectionAttached(int number) {
         switch (number) {
             case 1:
@@ -64,18 +100,61 @@ public class MainActivity extends ActionBarActivity
                 break;
             case 2:
                 mTitle = getString(R.string.title_section2);
-                openMapActivity();
+                    //opens map activity from Nav drawer
+               // openMapActivity();
                 break;
             case 3:
                 mTitle = getString(R.string.title_section3);
                 break;
         }
     }
+        //makes intent for map activity & starts activity
+//    private void openMapActivity() {
+//        Intent intent = new Intent(this, MapActivity.class);
+//        startActivity(intent);
+//    }
 
-    private void openMapActivity(){
-        Intent intent = new Intent(this, MapActivity.class);
-        startActivity(intent);
-    }
+
+        public static class MFragment extends SupportMapFragment {
+            public static final String TAG = "map";
+            /**
+             * The fragment argument representing the section number for this
+             * fragment.
+             */
+
+            /**
+             * Returns a new instance of this fragment for the given section number.
+             */
+            public static MFragment newInstance() {
+
+                return new MFragment();
+            }
+
+            public MFragment() {
+            }
+
+            @Override
+            public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                                     Bundle savedInstanceState) {
+                super.onCreateView(inflater, container, savedInstanceState);
+                View rootView = inflater.inflate(R.layout.activity_map, container,
+                        false);
+                return rootView;
+            }
+
+            @Override
+            public void onAttach(Activity activity) {
+                super.onAttach(activity);
+            }
+        }
+
+
+
+
+
+
+
+
 
     public void restoreActionBar() {
         ActionBar actionBar = getSupportActionBar();
@@ -153,4 +232,66 @@ public class MainActivity extends ActionBarActivity
         }
     }
 
+
+
+    private void setUpFragments() {
+        final FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+
+        // If the activity is killed while in BG, it's possible that the
+        // fragment still remains in the FragmentManager, so, we don't need to
+        // add it again.
+        mMapFragment = (MFragment) getSupportFragmentManager().findFragmentByTag(MFragment.TAG);
+        if (mMapFragment == null) {
+            mMapFragment = MFragment.newInstance();
+            ft.add(R.id.container, mMapFragment, MFragment.TAG);
+        }
+        ft.show(mMapFragment);
+
+        ft.commit();
+
+    }
+
+    private void showFragment(Fragment fragmentIn) {
+        if (fragmentIn == null) return;
+
+        final FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+
+        if (mVisible != null) ft.hide(mVisible);
+
+        ft.show(fragmentIn).commit();
+        mVisible = fragmentIn;
+    }
+
+    //from Map activity--
+
+    private void setUpMapIfNeeded() {
+        // Do a null check to confirm that we have not already instantiated the map.
+        if (mMap == null) {
+            // Try to obtain the map from the SupportMapFragment.
+            mMap = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map))
+                    .getMap();
+            // Check if we were successful in obtaining the map.
+            if (mMap != null) {
+                setUpMap();
+            }
+        }
+    }
+
+    public void setUpMap() {
+        //adds maker named DC and the lat and lng of the location
+        mMap.addMarker(new MarkerOptions().position(new LatLng(38.9065231,-77.0375448)).title("Washington DC"));
+
+        //sets the lat and lng
+        CameraUpdate center = CameraUpdateFactory.newLatLng(new LatLng(38.9065231,-77.0375448));
+        CameraUpdate zoom= CameraUpdateFactory.zoomTo(13);
+        //set the scope of the map to DC
+        mMap.moveCamera(center);
+        mMap.animateCamera(zoom);
+
+        //lets the user see where they are with the blue dot
+        mMap.setMyLocationEnabled(true);
+
+
+    }
 }
