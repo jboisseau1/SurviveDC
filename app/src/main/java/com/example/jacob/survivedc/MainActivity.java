@@ -25,18 +25,14 @@ import com.google.android.gms.maps.model.MarkerOptions;
 public class MainActivity extends ActionBarActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
 
-    /**
-     * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
-     */
+
     private NavigationDrawerFragment mNavigationDrawerFragment;
     private GoogleMap mMap;
 
 
-    /**
-     * Used to store the last screen title. For use in {@link #restoreActionBar()}.
-     */
-    private CharSequence mTitle;
 
+    private CharSequence mTitle;
+        //all of this is the same -- jacob
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,14 +50,15 @@ public class MainActivity extends ActionBarActivity
 
 
     }
-
+        //starts modifications here -- jacob
     @Override
     public void onNavigationDrawerItemSelected(int position) {
 
-            //starts at zero(0)
+            //i think it starts at zero(0) but breaks the app -- jacob
         switch (position){
             case 1:
-                    //Home fragment
+                    //Home fragment-> this makes the first activity named 'Home'
+                    //these are based off of the original code ie. the 'Placeholder' class -- jacob
                 FragmentManager fragmentManagerHome = getSupportFragmentManager();
                 fragmentManagerHome.beginTransaction()
 
@@ -74,13 +71,16 @@ public class MainActivity extends ActionBarActivity
 
 
         // inserts the new content by replacing fragments
-                //map fragment
+                //Map fragment -> replaces the current fragment with the map fragment -- jacob
         FragmentManager fragmentManagerMap = getSupportFragmentManager();
         fragmentManagerMap.beginTransaction()
 
                 .replace(R.id.container, MapFragment.newInstance(position + 1))
                 .commit();
                 break;
+
+            //the following is a test and should be left commented out. needs to be debugged (the problem with the numbers being offset)
+            //might want to try removing the '+1' added to position i will try this as well -- jacob
                 //fitness
 //            default:
 //
@@ -97,6 +97,7 @@ public class MainActivity extends ActionBarActivity
 
 
         //runs when pressed in drawer
+        //this gives the listview names to display. more may be added by making a new case -- jacob
     public void onSectionAttached(int number) {
         switch (number) {
             case 1:
@@ -110,10 +111,10 @@ public class MainActivity extends ActionBarActivity
                 break;
         }
     }
-       // makes intent for map activity & starts activity
 
 
 
+        //these methods(3) are stock they seem to do nothing. don't need to be changed -- jacob
 
     public void restoreActionBar() {
         ActionBar actionBar = getSupportActionBar();
@@ -150,13 +151,16 @@ public class MainActivity extends ActionBarActivity
 
         return super.onOptionsItemSelected(item);
     }
-
+        //the following three methods are the backbone of the app.
+        //based on the 'Placeholder' class they switch the current fragment with a new one that has been selected.
+        //i will go into detail on how they work in the method -- jacob
 
     public static class MapFragment extends Fragment {
-
+            //this gives the fragment a name so the app knows which fragment is open -- jacob
         private static final String ARG_SECTION_NUMBER = "Map";
 
-
+            //called when the fragment is being switched too.
+            // creates a new instance of the fragment -- jacob
         public static MapFragment newInstance(int sectionNumber) {
             MapFragment fragment = new MapFragment();
             Bundle args = new Bundle();
@@ -164,7 +168,7 @@ public class MainActivity extends ActionBarActivity
             fragment.setArguments(args);
             return fragment;
         }
-
+            //once the fragment is switched this method is called to start the activity fragment -- jacob
         public MapFragment() {
         }
 
@@ -172,9 +176,9 @@ public class MainActivity extends ActionBarActivity
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.activity_map, container, false);
-            return rootView;
+            return rootView;                        //here is where each of the fragments knows which xml file to use -- jacob
         }
-
+            //not sure what this does but i'd leave it in -- jacob
         @Override
         public void onAttach(Activity activity) {
             super.onAttach(activity);
@@ -182,7 +186,7 @@ public class MainActivity extends ActionBarActivity
                     getArguments().getInt(ARG_SECTION_NUMBER));
         }
     }
-
+        //the following(2) are the same as the one above just calling different xml files -- jacob
 
     public static class HomeFragment extends Fragment {
 
@@ -247,7 +251,7 @@ public class MainActivity extends ActionBarActivity
     }
 
 
-
+        //this isnt used but should be keeped because it have info we will need later on -- jacob
     public void setUpMap() {
         //adds maker named DC and the lat and lng of the location
         mMap.addMarker(new MarkerOptions().position(new LatLng(38.9065231,-77.0375448)).title("Washington DC"));
@@ -265,3 +269,13 @@ public class MainActivity extends ActionBarActivity
 
     }
 }
+/**
+ the app works great switching between fragments BUT it is offset by one button.
+
+            ie. if 'Home' was selected it would display 'Map'
+
+                i think the order starts at zero but the app never launches when the switch statement starts at zero.
+
+                    i taged my comments with '-- jacob'
+
+ */
