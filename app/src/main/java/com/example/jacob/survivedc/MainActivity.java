@@ -2,33 +2,24 @@ package com.example.jacob.survivedc;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.content.Context;
-import android.os.Build;
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.support.v4.widget.DrawerLayout;
-import android.widget.ArrayAdapter;
-import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-
-import java.util.Map;
 
 
 public class MainActivity extends ActionBarActivity
@@ -39,8 +30,7 @@ public class MainActivity extends ActionBarActivity
      */
     private NavigationDrawerFragment mNavigationDrawerFragment;
     private GoogleMap mMap;
-    private SupportMapFragment mMapFragment;
-    private Fragment mVisible;
+
 
     /**
      * Used to store the last screen title. For use in {@link #restoreActionBar()}.
@@ -61,33 +51,47 @@ public class MainActivity extends ActionBarActivity
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
 
-        setUpFragments();
-        mVisible = mMapFragment;
-        mTitle ="map";
+
+
     }
 
     @Override
     public void onNavigationDrawerItemSelected(int position) {
-        // update the main content by replacing fragments
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction()
-                .replace(R.id.container, PlaceholderFragment.newInstance(position + 1))
-                .commit();
 
-        switch (position)
-        {
-            //home
-            case 2:
-                showFragment(mMapFragment);
-                mTitle="mappp";
+            //starts at zero(0)
+        switch (position){
+            case 1:
+                    //Home fragment
+                FragmentManager fragmentManagerHome = getSupportFragmentManager();
+                fragmentManagerHome.beginTransaction()
+
+                        .replace(R.id.container, HomeFragment.newInstance(position + 1))
+                        .commit();
                 break;
+
+
+            case 2:
+
+
+        // inserts the new content by replacing fragments
+                //map fragment
+        FragmentManager fragmentManagerMap = getSupportFragmentManager();
+        fragmentManagerMap.beginTransaction()
+
+                .replace(R.id.container, MapFragment.newInstance(position + 1))
+                .commit();
+                break;
+                //fitness
+//            default:
 //
-
-
+//                FragmentManager fragmentManagerFitness = getSupportFragmentManager();
+//                fragmentManagerFitness.beginTransaction()
+//
+//                        .replace(R.id.container, FitnessFragment.newInstance(1))
+//                        .commit();
+//                break;
         }
 
-
-        //showFragment(mMapFragment);
     }
 
 
@@ -100,58 +104,13 @@ public class MainActivity extends ActionBarActivity
                 break;
             case 2:
                 mTitle = getString(R.string.title_section2);
-                    //opens map activity from Nav drawer
-               // openMapActivity();
                 break;
             case 3:
                 mTitle = getString(R.string.title_section3);
                 break;
         }
     }
-        //makes intent for map activity & starts activity
-//    private void openMapActivity() {
-//        Intent intent = new Intent(this, MapActivity.class);
-//        startActivity(intent);
-//    }
-
-
-        public static class MFragment extends SupportMapFragment {
-            public static final String TAG = "map";
-            /**
-             * The fragment argument representing the section number for this
-             * fragment.
-             */
-
-            /**
-             * Returns a new instance of this fragment for the given section number.
-             */
-            public static MFragment newInstance() {
-
-                return new MFragment();
-            }
-
-            public MFragment() {
-            }
-
-            @Override
-            public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                     Bundle savedInstanceState) {
-                super.onCreateView(inflater, container, savedInstanceState);
-                View rootView = inflater.inflate(R.layout.activity_map, container,
-                        false);
-                return rootView;
-            }
-
-            @Override
-            public void onAttach(Activity activity) {
-                super.onAttach(activity);
-            }
-        }
-
-
-
-
-
+       // makes intent for map activity & starts activity
 
 
 
@@ -192,35 +151,27 @@ public class MainActivity extends ActionBarActivity
         return super.onOptionsItemSelected(item);
     }
 
-    /**
-     * A placeholder fragment containing a simple view.
-     */
-    public static class PlaceholderFragment extends Fragment {
-        /**
-         * The fragment argument representing the section number for this
-         * fragment.
-         */
-        private static final String ARG_SECTION_NUMBER = "section_number";
 
-        /**
-         * Returns a new instance of this fragment for the given section
-         * number.
-         */
-        public static PlaceholderFragment newInstance(int sectionNumber) {
-            PlaceholderFragment fragment = new PlaceholderFragment();
+    public static class MapFragment extends Fragment {
+
+        private static final String ARG_SECTION_NUMBER = "Map";
+
+
+        public static MapFragment newInstance(int sectionNumber) {
+            MapFragment fragment = new MapFragment();
             Bundle args = new Bundle();
             args.putInt(ARG_SECTION_NUMBER, sectionNumber);
             fragment.setArguments(args);
             return fragment;
         }
 
-        public PlaceholderFragment() {
+        public MapFragment() {
         }
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+            View rootView = inflater.inflate(R.layout.activity_map, container, false);
             return rootView;
         }
 
@@ -233,50 +184,69 @@ public class MainActivity extends ActionBarActivity
     }
 
 
+    public static class HomeFragment extends Fragment {
 
-    private void setUpFragments() {
-        final FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        private static final String ARG_SECTION_NUMBER = "Home";
 
-        // If the activity is killed while in BG, it's possible that the
-        // fragment still remains in the FragmentManager, so, we don't need to
-        // add it again.
-        mMapFragment = (MFragment) getSupportFragmentManager().findFragmentByTag(MFragment.TAG);
-        if (mMapFragment == null) {
-            mMapFragment = MFragment.newInstance();
-            ft.add(R.id.container, mMapFragment, MFragment.TAG);
+
+        public static HomeFragment newInstance(int sectionNumber) {
+            HomeFragment fragment = new HomeFragment();
+            Bundle args = new Bundle();
+            args.putInt(ARG_SECTION_NUMBER, sectionNumber);
+            fragment.setArguments(args);
+            return fragment;
         }
-        ft.show(mMapFragment);
 
-        ft.commit();
+        public HomeFragment() {
+        }
 
-    }
+        @Override
+        public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                                 Bundle savedInstanceState) {
+            View rootView = inflater.inflate(R.layout.activity_main, container, false);
+            return rootView;
+        }
 
-    private void showFragment(Fragment fragmentIn) {
-        if (fragmentIn == null) return;
-
-        final FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
-
-        if (mVisible != null) ft.hide(mVisible);
-
-        ft.show(fragmentIn).commit();
-        mVisible = fragmentIn;
-    }
-
-    //from Map activity--
-
-    private void setUpMapIfNeeded() {
-        // Do a null check to confirm that we have not already instantiated the map.
-        if (mMap == null) {
-            // Try to obtain the map from the SupportMapFragment.
-            mMap = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map))
-                    .getMap();
-            // Check if we were successful in obtaining the map.
-            if (mMap != null) {
-                setUpMap();
-            }
+        @Override
+        public void onAttach(Activity activity) {
+            super.onAttach(activity);
+            ((MainActivity) activity).onSectionAttached(
+                    getArguments().getInt(ARG_SECTION_NUMBER));
         }
     }
+
+    public static class FitnessFragment extends Fragment {
+
+        private static final String ARG_SECTION_NUMBER = "Fitness";
+
+
+        public static FitnessFragment newInstance(int sectionNumber) {
+            FitnessFragment fragment = new FitnessFragment();
+            Bundle args = new Bundle();
+            args.putInt(ARG_SECTION_NUMBER, sectionNumber);
+            fragment.setArguments(args);
+            return fragment;
+        }
+
+        public FitnessFragment() {
+        }
+
+        @Override
+        public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                                 Bundle savedInstanceState) {
+            View rootView = inflater.inflate(R.layout.activity_fitness, container, false);
+            return rootView;
+        }
+
+        @Override
+        public void onAttach(Activity activity) {
+            super.onAttach(activity);
+            ((MainActivity) activity).onSectionAttached(
+                    getArguments().getInt(ARG_SECTION_NUMBER));
+        }
+    }
+
+
 
     public void setUpMap() {
         //adds maker named DC and the lat and lng of the location
