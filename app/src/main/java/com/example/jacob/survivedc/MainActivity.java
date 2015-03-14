@@ -62,7 +62,7 @@ public class MainActivity extends ActionBarActivity
                 FragmentManager fragmentManagerHome = getSupportFragmentManager();
                 fragmentManagerHome.beginTransaction()
 
-                        .replace(R.id.container, HomeFragment.newInstance(position + 1))
+                        .replace(R.id.container, HomeFragment.newInstance(position))
                         .commit();
                 break;
 
@@ -75,7 +75,7 @@ public class MainActivity extends ActionBarActivity
         FragmentManager fragmentManagerMap = getSupportFragmentManager();
         fragmentManagerMap.beginTransaction()
 
-                .replace(R.id.container, MapFragment.newInstance(position + 1))
+                .replace(R.id.container, MapFragment.newInstance(position))
                 .commit();
                 break;
 
@@ -125,7 +125,7 @@ public class MainActivity extends ActionBarActivity
 
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public boolean onCreateOptionsMenu(Menu menu) {http://geck1.blogspot.com/2014/05/google-map-in-navigation-drawer-fragment.html
         if (!mNavigationDrawerFragment.isDrawerOpen()) {
             // Only show items in the action bar relevant to this screen
             // if the drawer is not showing. Otherwise, let the drawer
@@ -219,7 +219,7 @@ public class MainActivity extends ActionBarActivity
         }
     }
 
-    public static class FitnessFragment extends Fragment {
+   /* public static class FitnessFragment extends Fragment {
 
         private static final String ARG_SECTION_NUMBER = "Fitness";
 
@@ -249,24 +249,24 @@ public class MainActivity extends ActionBarActivity
                     getArguments().getInt(ARG_SECTION_NUMBER));
         }
     }
-
-
-        //this isnt used but should be keeped because it have info we will need later on -- jacob
+    */
+        //Pasted this over into it's own class --Fahad
+        //this isnt used but should be kept because it has info we will need later on -- jacob
     public void setUpMap() {
-        //adds maker named DC and the lat and lng of the location
-        mMap.addMarker(new MarkerOptions().position(new LatLng(38.9065231,-77.0375448)).title("Washington DC"));
+        //adds maker named DC and the lat and lng of the location --Jacob
+        //Changed marker to Dupont Circle which is the starting point of the game
+        mMap.addMarker(new MarkerOptions().position(new LatLng(38.909669, -77.043385)).title("Starting Point"));
 
         //sets the lat and lng
-        CameraUpdate center = CameraUpdateFactory.newLatLng(new LatLng(38.9065231,-77.0375448));
+        CameraUpdate center = CameraUpdateFactory.newLatLng(new LatLng(38.909669, -77.043385));
         CameraUpdate zoom= CameraUpdateFactory.zoomTo(13);
+
         //set the scope of the map to DC
         mMap.moveCamera(center);
         mMap.animateCamera(zoom);
 
         //lets the user see where they are with the blue dot
         mMap.setMyLocationEnabled(true);
-
-
     }
 }
 /**
