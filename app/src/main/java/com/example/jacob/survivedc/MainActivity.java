@@ -56,7 +56,7 @@ public class MainActivity extends ActionBarActivity
 
             //i think it starts at zero(0) but breaks the app -- jacob
         switch (position){
-            case 1:
+            case 0:
                     //Home fragment-> this makes the first activity named 'Home'
                     //these are based off of the original code ie. the 'Placeholder' class -- jacob
                 FragmentManager fragmentManagerHome = getSupportFragmentManager();
@@ -67,7 +67,7 @@ public class MainActivity extends ActionBarActivity
                 break;
 
 
-            case 2:
+            case 1:
 
 
         // inserts the new content by replacing fragments
@@ -82,14 +82,14 @@ public class MainActivity extends ActionBarActivity
             //the following is a test and should be left commented out. needs to be debugged (the problem with the numbers being offset)
             //might want to try removing the '+1' added to position i will try this as well -- jacob
                 //fitness
-//            default:
-//
-//                FragmentManager fragmentManagerFitness = getSupportFragmentManager();
-//                fragmentManagerFitness.beginTransaction()
-//
-//                        .replace(R.id.container, FitnessFragment.newInstance(1))
-//                        .commit();
-//                break;
+            case 2:
+
+                FragmentManager fragmentManagerFitness = getSupportFragmentManager();
+                fragmentManagerFitness.beginTransaction()
+
+                        .replace(R.id.container, FitnessFragment.newInstance(position))
+                        .commit();
+                break;
         }
 
     }
@@ -100,13 +100,13 @@ public class MainActivity extends ActionBarActivity
         //this gives the listview names to display. more may be added by making a new case -- jacob
     public void onSectionAttached(int number) {
         switch (number) {
-            case 1:
+            case 0:
                 mTitle = getString(R.string.title_section1);
                 break;
-            case 2:
+            case 1:
                 mTitle = getString(R.string.title_section2);
                 break;
-            case 3:
+            case 2:
                 mTitle = getString(R.string.title_section3);
                 break;
         }
@@ -125,7 +125,7 @@ public class MainActivity extends ActionBarActivity
 
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {http://geck1.blogspot.com/2014/05/google-map-in-navigation-drawer-fragment.html
+    public boolean onCreateOptionsMenu(Menu menu) {//geck1.blogspot.com/2014/05/google-map-in-navigation-drawer-fragment.html
         if (!mNavigationDrawerFragment.isDrawerOpen()) {
             // Only show items in the action bar relevant to this screen
             // if the drawer is not showing. Otherwise, let the drawer
@@ -207,7 +207,7 @@ public class MainActivity extends ActionBarActivity
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.activity_main, container, false);
+            View rootView = inflater.inflate(R.layout.activity_home, container, false);
             return rootView;
         }
 
