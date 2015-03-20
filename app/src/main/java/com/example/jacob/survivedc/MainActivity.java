@@ -1,7 +1,6 @@
 package com.example.jacob.survivedc;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
@@ -17,7 +16,6 @@ import android.support.v4.widget.DrawerLayout;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
@@ -36,7 +34,7 @@ public class MainActivity extends ActionBarActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_framwork_navigation);
 
         mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
@@ -72,15 +70,17 @@ public class MainActivity extends ActionBarActivity
 
         // inserts the new content by replacing fragments
                 //Map fragment -> replaces the current fragment with the map fragment -- jacob
-        FragmentManager fragmentManagerMap = getSupportFragmentManager();
+           MapFragment mMap = MapFragment.newInstance(position);
+
+                FragmentManager fragmentManagerMap = getSupportFragmentManager();
         fragmentManagerMap.beginTransaction()
 
-                .replace(R.id.container, MapFragment.newInstance(position))
+                .replace(R.id.container,mMap)
                 .commit();
+
                 break;
 
-            //the following is a test and should be left commented out. needs to be debugged (the problem with the numbers being offset)
-            //might want to try removing the '+1' added to position i will try this as well -- jacob
+
                 //fitness
             case 2:
 
@@ -125,7 +125,7 @@ public class MainActivity extends ActionBarActivity
 
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {//geck1.blogspot.com/2014/05/google-map-in-navigation-drawer-fragment.html
+    public boolean onCreateOptionsMenu(Menu menu) {
         if (!mNavigationDrawerFragment.isDrawerOpen()) {
             // Only show items in the action bar relevant to this screen
             // if the drawer is not showing. Otherwise, let the drawer
@@ -277,5 +277,11 @@ public class MainActivity extends ActionBarActivity
                 i think the order starts at zero but the app never launches when the switch statement starts at zero.
 
                     i taged my comments with '-- jacob'
+
+
+
+ websites:
+ http://www.google.com/design/spec/style/color.html#color-color-palette
+ geck1.blogspot.com/2014/05/google-map-in-navigation-drawer-fragment.html
 
  */
